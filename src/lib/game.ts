@@ -1,7 +1,7 @@
 export type Rank = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13;
 export type Phase = "ready" | "draw" | "result" | "finished";
 export type Rule = { id: string; who: string; action: string; condition: string };
-export type Game = { playerCount: number; playerIndex: number; round: number; deck: Rank[]; drawn: number; currentCard: Rank | null; phase: Phase; activeRule: Rule | null };
+export type Game = { playerCount: number; playerIndex: number; round: number; deck: Rank[]; drawn: number; currentCard: Rank | null; phase: Phase; activeRule: Rule | null; jackHolder: number | null; queenHolder: number | null };
 
 export const cardInfo: { rank: Rank; label: string; meaning: string }[] = [
   { rank: 1, label: "A", meaning: "กินคนเดียว" },
@@ -13,7 +13,7 @@ export const cardInfo: { rank: Rank; label: string; meaning: string }[] = [
   { rank: 7, label: "7", meaning: "หาบัดดี้" },
   { rank: 8, label: "8", meaning: "พัก" },
   { rank: 9, label: "9", meaning: "เกม" },
-  { rank: 10, label: "10", meaning: "ห้ามพูด 1 รอบ" },
+  { rank: 10, label: "10", meaning: "ห้ามพูด 1 รอบถ้าพูดกิน" },
   { rank: 11, label: "J", meaning: "จับหน้า ใครจับช้าสุดโดน" },
   { rank: 12, label: "Q", meaning: "คนอื่นห้ามตอบ" },
   { rank: 13, label: "K", meaning: "สร้างกฎใหม่แทนกฎ K เดิม" },
@@ -32,7 +32,7 @@ export function newDeck(): Rank[] {
 }
 
 export function newGame(playerCount: number): Game {
-  return { playerCount, playerIndex: 0, round: 1, deck: newDeck(), drawn: 0, currentCard: null, phase: "ready", activeRule: null };
+  return { playerCount, playerIndex: 0, round: 1, deck: newDeck(), drawn: 0, currentCard: null, phase: "ready", activeRule: null, jackHolder: null, queenHolder: null };
 }
 
 export function randomRule(playerCount: number): Rule {
@@ -40,8 +40,8 @@ export function randomRule(playerCount: number): Rule {
   return {
     id: `${Date.now()}-${Math.random()}`,
     who: pick(who),
-    action: pick(["ดื่ม 1 ครั้ง", "ชนแก้วกับ 1 คน", "เลือกคนอื่นทำแทน"]),
-    condition: pick(["ถ้าหัวเราะ", "ถ้าคนข้าง ๆ ดื่ม", "ถ้ามีคนอื่นดื่ม", "ถ้าใครทำผิดกฎ"]),
+    action: pick(["ดื่ม 1 ครั้ง", "ชนแก้วกับ 1 คน",]),
+    condition: pick(["ถ้าตัวเองหัวเราะ", "ถ้าคนข้าง ๆ ดื่ม", "ถ้าพูดคำหยาบ"]),
   };
 }
 

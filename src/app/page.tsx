@@ -34,7 +34,7 @@ export default function Home() {
           // Older saved games stored every K rule in an array. Keep only the latest.
           const activeRule = parsed.activeRule ?? parsed.currentRule ?? parsed.rules?.at(-1) ?? null;
           const { rules: _oldRules, currentRule: _oldCurrentRule, ...rest } = parsed;
-          setGame({ ...rest, activeRule });
+          setGame({ ...rest, activeRule, jackHolder: parsed.jackHolder ?? (parsed.currentCard === 11 ? parsed.playerIndex : null), queenHolder: parsed.queenHolder ?? (parsed.currentCard === 12 ? parsed.playerIndex : null) });
         }
       }
     } catch { /* Ignore invalid saved data. */ }
@@ -66,7 +66,7 @@ export default function Home() {
       }, 85);
       setGame({ ...game, deck, drawn: game.drawn + 1, currentCard: rank, activeRule: rule, phase: "result" });
     } else {
-      setGame({ ...game, deck, drawn: game.drawn + 1, currentCard: rank, phase: "result" });
+      setGame({ ...game, deck, drawn: game.drawn + 1, currentCard: rank, phase: "result", jackHolder: rank === 11 ? game.playerIndex : game.jackHolder, queenHolder: rank === 12 ? game.playerIndex : game.queenHolder });
     }
   }
 
@@ -138,6 +138,10 @@ export default function Home() {
       </div>
       <div className="game-bottom"><span>ผู้เล่น {game.playerIndex + 1} / {game.playerCount}</span><span>ไพ่ที่เหลือ {game.deck.length} ใบ</span></div>
       {game.activeRule && <div className="active-rules"><div className="active-heading"><span>✦</span> กฎ K ที่กำลังใช้ <strong>จนกว่าจะได้ K ใหม่</strong></div><div className="active-rule"><span className="rule-index">K</span><RuleText rule={game.activeRule} /></div></div>}
+      <div className="active-rules" aria-live="polite">
+        <div className="active-heading">ผู้ถือไพ่ J / Q <strong>ถือไว้จนกว่าจะมีคนจั่วใบเดียวกันได้</strong></div>
+        {([{ label: "J", holder: game.jackHolder, meaning: "จับหน้า ใครจับช้าสุดโดน" }, { label: "Q", holder: game.queenHolder, meaning: "คนอื่นห้ามตอบ" }] as const).map(card => <div className="active-rule" key={card.label}><span className="rule-index">{card.label}</span><span><strong>{card.holder == null ? "ยังไม่มีผู้ถือ" : `ผู้เล่นคนที่ ${card.holder + 1}`}</strong> · {card.meaning}</span></div>)}
+      </div>
     </section>}
 
     {modal && <div className="modal-backdrop" onMouseDown={e => { if (e.target === e.currentTarget) setModal(null); }}><div className="modal-panel" role="dialog" aria-modal="true" aria-label={modal === "cards" ? "ความหมายไพ่" : modal === "reset" ? "เริ่มเกมใหม่" : "กฎการเล่น"}>
