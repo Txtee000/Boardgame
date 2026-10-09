@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "วงไพ่ | เกมไพ่สำหรับวงเพื่อน",
-  description: "จั่วไพ่ ส่งตา และสนุกกับกฎใหม่ในวงเพื่อน",
+  title: "วงเล่น | เกมสำหรับวงเพื่อน",
+  description: "เลือกเกมวงไพ่หรือทอยลูกเต๋า 3D แล้วสนุกด้วยกันในวงเพื่อน",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
