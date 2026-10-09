@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import HomeButton from "@/components/home-button";
 import dynamic from "next/dynamic";
 import { useCallback, useRef, useState } from "react";
 
@@ -40,7 +41,7 @@ export default function DicePage() {
     <div className="ambient ambient-one" /><div className="ambient ambient-two" />
     <header className="topbar">
       <Link href="/" className="brand brand-link"><span className="brand-mark">✦</span><span>วงเล่น<span className="brand-dot">.</span></span></Link>
-      <Link href="/" className="text-action">← เลือกเกม</Link>
+      <HomeButton />
     </header>
     {!started ? <section className="setup-wrap">
       <div className="eyebrow"><span className="eyebrow-line" /> DICE ROLL <span className="eyebrow-line" /></div>

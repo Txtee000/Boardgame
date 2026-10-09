@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import HomeButton from "@/components/home-button";
 import { advanceTurn, basicRules, cardInfo, newGame, randomRule, type Game, type Rank, type Rule } from "@/lib/game";
 
 const STORAGE_KEY = "cardgame-table-v1";
@@ -78,7 +78,7 @@ export default function Home() {
     <header className="topbar">
       <div className="brand"><span className="brand-mark">✦</span><span>วงไพ่<span className="brand-dot">.</span></span></div>
       <div className="top-actions">
-        <Link className="text-action" href="/">เลือกเกม</Link>
+        <HomeButton />
         {game && <button className="text-action" onClick={() => setModal("reset")}>เริ่มใหม่</button>}
         <button className="icon-button" aria-label="ดูกฎการเล่น" onClick={() => setModal("rules")}>?</button>
       </div>
